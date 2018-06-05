@@ -1,0 +1,34 @@
+- name:  Show vars in playbook
+  hosts: nodes
+  vars:
+    URL: vars.google.com
+    ### Note: vars is global across all tasks because it is defined in play
+  tasks:
+    - name: Print variable 
+      debug:
+        msg: "URL = {{URL}}"
+    
+    - name: Print task variable 
+      debug:
+        msg: "URL = {{URL}}"
+      vars:
+        URL: task.google.com
+
+    ### Note: vars defined at task level can be used on only that task.
+
+    - name: Access variables from command line
+      debug:
+        msg: "ENV = {{ENV}}"
+
+    ### You can parse the variables in following way.
+    #ansible-playbook playbooks/03-vars.yml -e ENV=PROD
+
+    - name: Access variables from inventory - individual host variable
+      debug:
+        msg: "VALUE = {{VALUE}}"
+
+    - name: Access variables from inventory - group variable
+      debug:
+        msg: "VALUE = {{GROUP_VALUE}}"
+
+

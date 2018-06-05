@@ -1,0 +1,11 @@
+- name: Check ping of nodes
+  hosts: nodes
+  tasks:
+    - name: Check ping 
+      ping: 
+
+- name: Check ping of nodes
+  hosts: nodes
+  tasks:
+    - name: Check ping 
+      ping: 

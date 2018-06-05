@@ -1,0 +1,4 @@
+[nodes]
+node1 VALUE=10
+[nodes:vars]
+GROUP_VALUE=20
