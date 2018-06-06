@@ -1,0 +1,14 @@
+- name: Demo on set_facts variables
+  hosts: nodes
+  tasks:
+    - name: Run some shell command.
+      shell: who |wc -l 
+      register: out
+
+    - name: Define no of users variable
+      set_fact:
+        NO_OF_USERS: "{{out.stdout}}"
+
+    - name: Print no of users logged in
+      debug: 
+        msg: "No of Users = {{NO_OF_USERS}}"

@@ -1,0 +1,20 @@
+- name: Setup DB Server
+  hosts: nodes
+  become: yes
+  tasks:
+    - name: Install MariaDB Server.
+      package:
+        name: mariadb-server
+        state: installed
+
+    - name: Start MariaDB Service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Create studentapp DB 
+      mysql_db:
+        name: studentapp
+        state: present
+        
