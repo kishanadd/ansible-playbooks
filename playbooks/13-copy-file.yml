@@ -1,0 +1,8 @@
+- name: Demo on copy file
+  hosts: nodes
+  tasks:
+    - name: Copy a file 
+      copy:
+        src: files/sample.txt
+        dest: /tmp/sample.txt
+        
