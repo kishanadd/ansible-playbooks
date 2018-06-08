@@ -58,7 +58,9 @@
     - APP
   vars: 
     URL: http://redrockdigimark.com/apachemirror/tomcat/tomcat-9/v9.0.8/bin/apache-tomcat-9.0.8.tar.gz
-
+    WARURL: https://github.com/cit-aliqui/APP-STACK/raw/master/student.war
+    JDBCURL: https://github.com/cit-aliqui/APP-STACK/raw/master/mysql-connector-java-5.1.40.jar
+  gather_facts: true
   tasks:
     - name: Install Java
       package:
@@ -73,13 +75,58 @@
       set_fact:
         TOMCAT_DIR: "{{out.stdout}}"
 
+    - name: Check if tomcat already exists..
+      shell: ls -ld "/opt/{{TOMCAT_DIR}}"
+      register: out 
+      ignore_errors: True 
+
     - name: Download Tomcat
       unarchive:
         src: "{{URL}}"
         dest: /opt
         remote_src: yes
+      when: out.rc != 0
 
     - name: List files of webapps.
+      find:
+        paths: /opt/apache-tomcat-9.0.8/webapps
+        file_type: any
+      register: out 
+  
+    - name: Delete webapps
+      file:
+        path: "{{item.path}}"
+        state: absent
+      with_items: "{{out.files}}"  
+
+    - name: Download WAR file 
+      get_url:
+        url: "{{WARURL}}"
+        dest: "/opt/{{TOMCAT_DIR}}/webapps/student.war"
+
+    - name: Download JDBC file
+      get_url:
+        url: "{{JDBCURL}}"
+        dest: "/opt/{{TOMCAT_DIR}}/lib/mysql-connector-java-5.1.40.jar"
+
+    - name: Add JDBC connection
+      lineinfile:
+        path: "/opt/{{TOMCAT_DIR}}/conf/context.xml"
+        line: <Resource name="jdbc/NewDB" auth="Container" type="javax.sql.DataSource" maxActive="50" maxIdle="30" maxWait="10000" username="student" password="student@1" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://{{facter_ipaddress}}:3306/studentapp"/>
+        insertbefore: '</Context>'
+
+    - name: Check tomcat running or not.
+      shell: ps -ef | grep java | grep {{TOMCAT_DIR}} | grep -v grep 
+      register: out
+      ignore_errors: yes
+
+    - name: Stop tomcat if running
+      when: out.rc == 0
+      shell: nohup /opt/{{TOMCAT_DIR}}/bin/shutdown.sh
+
+    - name: Start Tomcat 
+      shell: nohup /opt/{{TOMCAT_DIR}}/bin/startup.sh 
+
       
 
 

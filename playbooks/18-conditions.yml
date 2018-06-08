@@ -1,0 +1,10 @@
+- name: Demo on conditions
+  hosts: nodes
+  vars:
+    a: 10
+  tasks:
+    - debug:
+        msg: "a = {{a}}"
+      #when: a is defined  ## If a variable is defined then condition is true 
+      #when: a > 5         ## Perform arithematic operations
+      #when: a == 10       ## Check the value of a = 10 or not (can be checked string also)
