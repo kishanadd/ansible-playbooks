@@ -1,4 +1,7 @@
-[nodes]
-node1 VALUE=10
-[nodes:vars]
-GROUP_VALUE=20
+[appnodes]
+appnode1
+appnode2
+[dbnodes]
+dbserver
+[proxynodes]
+haproxy
