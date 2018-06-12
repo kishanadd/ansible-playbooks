@@ -5,3 +5,6 @@ appnode2
 dbserver
 [proxynodes]
 haproxy
+
+[nodes]
+appnode1

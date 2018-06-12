@@ -1,0 +1,6 @@
+- name: Demo on roles
+  hosts: nodes
+  become: yes
+  gather_facts: yes
+  roles:
+    - webservice
