@@ -1,0 +1,15 @@
+## TO encrypt a file 
+	ansible-vault  encrypt playbooks/27-ansible-vault.yml 
+## To run the playbook 
+        ansible-playbook playbooks/27-ansible-vault.yml --vault-id @prompt
+        
+## Else store the password in some file and parse that file 
+        ansible-playbook playbooks/27-ansible-vault.yml --vault-id pass.txt
+
+## To decrypt the file
+	ansible-vault decrypt playbooks/27-ansible-vault.yml
+## TO encypt a string.
+  	ansible-vault encrypt_string 'abcd@1234' --name PASS
+## Run the playbook
+	ansible-playbook playbooks/27-ansible-vault.yml --vault-id @prompt
+
