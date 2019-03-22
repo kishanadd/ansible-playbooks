@@ -70,7 +70,7 @@
         state: installed 
 
     - name: Run filters
-      shell: echo {{URL}} | awk -F / '{print $NF}' | sed -e 's/.tar.gz//'
+      shell: echo {{URL}} | awk -F / '{print $NF}' | sed -e 's/.tar.gz//'  ----  take last part on url 
       register: out
 
     - name: Define TAR Variable 
